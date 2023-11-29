@@ -4,11 +4,6 @@ def play_game(user, list_of_words, window):
     playing = True
 
     for index, word in enumerate(list_of_words):
-
-        if word not in [userword[0] for userword in user.words]:
-            user.add_word(word)
-
-
         still_thinking = True
         if word in user.dropped_words:
             still_thinking=False
@@ -21,21 +16,29 @@ def play_game(user, list_of_words, window):
                 elif event.type == pygame.KEYUP and event.key == pygame.K_SPACE:
                     flipped = not flipped
                 elif event.type == pygame.KEYUP and event.key == pygame.K_1:
+                    if word not in [userword[0] for userword in user.words]:
+                        user.add_word(word)
                     user.self_assess( word, 1)
                     still_thinking = not still_thinking
                     if word == list_of_words[-1]:
                         playing = False
                 elif event.type == pygame.KEYUP and event.key == pygame.K_2:
+                    if word not in [userword[0] for userword in user.words]:
+                        user.add_word(word)
                     user.self_assess( word, 2)
                     still_thinking = not still_thinking
                     if word == list_of_words[-1]:
                         playing = False
                 elif event.type == pygame.KEYUP and event.key == pygame.K_3:
+                    if word not in [userword[0] for userword in user.words]:
+                        user.add_word(word)
                     user.self_assess( word, 3)
                     still_thinking = not still_thinking
                     if word == list_of_words[-1]:
                         playing = False
                 elif event.type == pygame.KEYUP and event.key == pygame.K_x:
+                    if word not in [userword[0] for userword in user.words]:
+                        user.add_word(word)
                     user.drop_word(word)
                     still_thinking = not still_thinking
                     if word == list_of_words[-1]:

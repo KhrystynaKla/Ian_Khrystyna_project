@@ -1,31 +1,14 @@
-# from user import User
-# import pygame
-# from play_game import play_game
-# from word_list import vocab_list
-
-# pygame.init()
-# window = pygame.display.set_mode([850, 500])
-
-# playing = True
-
-# while playing:
-
-#     playing = play_game(User("Ian"), vocab_list, window)
-#     window.fill((255, 255, 255)) 
-#     pygame.display.update()
-
-# pygame.quit()
-
 import pygame
-from user import User, unjoin, unjoin_dropped_words
+from user import User
 from play_game import play_game
 from word_list import vocab_list
+from undrop_the_word import review_dropped_words
 
 pygame.init()
 
 # Function to get user name
 def get_user_name():
-    screen = pygame.display.set_mode((400, 200))
+    screen = pygame.display.set_mode((850, 500))
     pygame.display.set_caption("Enter Your Name")
 
     font = pygame.font.Font(None, 36)
@@ -58,30 +41,69 @@ def get_user_name():
 
         screen.fill((255, 255, 255))
         txt_surface = font.render(text, True, color)
-        width = max(200, txt_surface.get_width()+10)
+        width = max(200, txt_surface.get_width() + 10)
         input_box.w = width
-        screen.blit(txt_surface, (input_box.x+5, input_box.y+5))
+        screen.blit(txt_surface, (input_box.x + 5, input_box.y + 5))
         pygame.draw.rect(screen, color, input_box, 2)
         pygame.display.flip()
 
 # Get user name
 user_name = get_user_name()
+menu_window = pygame.display.set_mode([850, 500])
+on_menu = True
+
+while on_menu:
+    if user_name not in [user.name for user in User.get_all_users()]:
+        current_user = User(user_name)
+        current_user.create()
+        use_this_list = vocab_list[:20]
+    else:
+        for user in User.get_all_users():
+            if user.name == user_name:
+                current_user = user
+                use_this_list = current_user.list_of_words_to_review()
+
+    font = pygame.font.Font('freesansbold.ttf', 32)
+
+    text1 = font.render('PRESS 1 TO STUDY', True, (0, 255, 0), (0, 0, 128))
+    text2 = font.render('PRESS 2 TO SEE DROPPED WORDS', True, (0, 255, 0), (0, 0, 128))
+
+    textRect1 = text1.get_rect()
+    textRect2 = text2.get_rect()
+
+    textRect1.center = (850 // 2, 500 // 3)
+    textRect2.center = (850 // 2, 500 // 3 * 2)
+
+    menu_window.fill((255, 255, 255))  # Clear the menu window
+    menu_window.blit(text1, textRect1)
+    menu_window.blit(text2, textRect2)
+    pygame.display.update()
+
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            on_menu = False
+        elif event.type == pygame.KEYUP and event.key == pygame.K_1:
+            on_menu = False
+            playing = True
+            undropping=False
+        elif event.type == pygame.KEYUP and event.key == pygame.K_2:
+            on_menu = False
+            undropping=True
+            playing = False
 
 # Initialize game window
 window = pygame.display.set_mode([850, 500])
 
-playing = True
-
 while playing:
-    if user_name not in [user.name for user in User.get_all_users()]:
-        current_user = User(user_name)
-        current_user.create()
-    else:
-        for user in User.get_all_users():
-            if user.name==user_name:
-                current_user=user
-    playing = play_game(current_user, vocab_list, window)
+    playing = play_game(current_user, use_this_list, window)
+    window.fill((255, 255, 255))
+    pygame.display.update()
+
+while undropping:
+    undropping=review_dropped_words(current_user, window)
     window.fill((255, 255, 255))
     pygame.display.update()
 
 pygame.quit()
+
+

@@ -11,7 +11,6 @@ def unjoin(db_word_list):
     for item in new_list:
         new_item=[]
         new_item.append(item[0].split('%'))
-        print(item[1])
         new_item.append(datetime.datetime.strptime(item[1], "%Y-%m-%d %H:%M:%S"))
         
         new_item.append(datetime.timedelta(seconds=int(float(item[2]))))
@@ -71,7 +70,8 @@ class User:
 
     def join_words(self):
         new_list =[]
-        for item in self.words:
+        sorted_list_of_words=sorted(self.words, key=lambda word : word[1]+word[2])
+        for item in sorted_list_of_words:
             new_item=[]
             new_item.append('%'.join(item[0]))
             new_item.append(item[1].strftime( "%Y-%m-%d %H:%M:%S"))
@@ -105,22 +105,27 @@ class User:
             all_users.append(User(name=tup[1], id=tup[0], words=unjoin(tup[2]), dropped_words=unjoin_dropped_words(tup[3])))
         return all_users
     
-        # creates a new instance for each row in the db
-
-# new_ian_list=[[word, datetime.datetime.now().replace(microsecond=0), datetime.timedelta(seconds=17)] for word in vocab_list[:3]]
-# ian2=User('Ян', new_ian_list, vocab_list[4:7])
-
-# ian2.create()
-
-
-
+    def timeless_words(self):
+        return [word[0] for word in self.words]
 
     
+    def list_of_words_to_review(self):
+        words_due=[word[0] for word in self.words if word[1]+word[2]<datetime.datetime.now() and word[0] not in self.dropped_words]
+        if len(words_due)>=20:
+            return words_due[:20]
+        else:
+            current_list=words_due
+            for curr_word in vocab_list:
+                if len(current_list)==20:
+                    return current_list
+                else:
+                    if curr_word not in self.timeless_words():
+                        current_list.append(curr_word)
+            return current_list
     
     
 
 
-    
     
 
      
