@@ -1,6 +1,7 @@
 import datetime
 from word_list import vocab_list
 
+#just for testing purposes
 
 
 def unjoin(db_word_list):

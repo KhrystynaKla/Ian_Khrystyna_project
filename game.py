@@ -8,7 +8,7 @@ from random import shuffle, sample
 
 pygame.init()
 
-# Function to get user name
+# Function to get user name, when you start playing
 def get_user_name():
     screen = pygame.display.set_mode((850, 500))
     pygame.display.set_caption("Enter Your Name")
@@ -51,15 +51,15 @@ def get_user_name():
 
 # Get user name
 user_name = get_user_name()
-menu_window = pygame.display.set_mode([850, 500])
-background_image = pygame.image.load('Stand with Ukraine Poster Landscape.png')
+background_image = pygame.image.load('backgrounds/Stand with Ukraine Poster Landscape.png')
 background_image = pygame.transform.scale(background_image, (850, 500))
-
 window = pygame.display.set_mode([850, 500])
 
+#building of the main menu
 def menu_call(user_name):
     on_menu=True
     while on_menu:
+        # Check if the user is new or returning
         if user_name not in [user.name for user in User.get_all_users()]:
             current_user = User(user_name)
             current_user.create()
@@ -72,6 +72,7 @@ def menu_call(user_name):
 
         font = pygame.font.Font('freesansbold.ttf', 32)
 
+        # Main menu options
         text1 = font.render('PRESS 1 TO STUDY', True, (0, 0, 0))
         text2 = font.render('PRESS 2 TO SEE DROPPED WORDS', True, (0, 0, 0))
         text3 = font.render('PRESS 3 TO TAKE A QUIZ', True, (0, 0, 0))
@@ -85,12 +86,12 @@ def menu_call(user_name):
         textRect3.center = (850 // 2, 500 // 3 * 2+20)
         
 
-        menu_window.blit(background_image, (0, 0))
-        # menu_window.fill((255, 255, 255))  # Clear the menu window
-        menu_window.blit(text1, textRect1)
+        window.blit(background_image, (0, 0))
+        window.blit(text1, textRect1)
         if current_user.words:
-            menu_window.blit(text2, textRect2)
-            menu_window.blit(text3, textRect3)
+            window.blit(text2, textRect2)
+            window.blit(text3, textRect3)
+
         pygame.display.update()
 
         for event in pygame.event.get():
@@ -107,6 +108,8 @@ def menu_call(user_name):
                 on_menu = False
                 playing_quiz(shuffled_list, current_user)
 
+
+# Function to ask the user about the quiz after playing
 def ask_about_quiz(current_user, use_this_list):
     still_thinking=True
     while still_thinking:
@@ -120,10 +123,11 @@ def ask_about_quiz(current_user, use_this_list):
         textRect1.center = (850 // 2, 500 // 3)
         textRect2.center = (850 // 2, 500 // 3*2)
 
-        menu_window.blit(background_image, (0, 0))
-        # menu_window.fill((255, 255, 255))  # Clear the menu window
-        menu_window.blit(text1, textRect1)
-        menu_window.blit(text2, textRect2)
+
+        window.blit(background_image, (0, 0))
+        window.blit(text1, textRect1)
+        window.blit(text2, textRect2)
+
         pygame.display.update()
         
         for event in pygame.event.get():
@@ -137,9 +141,7 @@ def ask_about_quiz(current_user, use_this_list):
                 still_thinking=False
 
 
-
-
-
+# Function to handle the playing state
 def playing(current_user, use_this_list):
     playing=True
     while playing:
@@ -149,7 +151,7 @@ def playing(current_user, use_this_list):
     ask_about_quiz(current_user, use_this_list)
     menu_call(user_name)
     
-
+# Function to handle the undropping state
 def undropping(current_user):
     undropping=True
     while undropping:
@@ -158,6 +160,7 @@ def undropping(current_user):
         pygame.display.update()
     menu_call(user_name)
 
+# Function to handle the quiz state
 def playing_quiz(word_list, current_user):
     in_quiz=True
     while in_quiz:
@@ -166,6 +169,7 @@ def playing_quiz(word_list, current_user):
         pygame.display.update()
     menu_call(user_name)
 
+# Initial call to the main menu
 menu_call(user_name)
 pygame.quit()
 

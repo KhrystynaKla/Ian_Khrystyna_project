@@ -3,22 +3,21 @@ from __init__ import CONN, CURSOR
 import pygame
 import math
 
-
+# Function to review and undrop words from the user's dropped list.
 def review_dropped_words(user, window):
     window.fill((255, 255, 255))
-    background_image = pygame.image.load('Drop words.png')
+    background_image = pygame.image.load('backgrounds/Drop words.png')
     background_image = pygame.transform.scale(background_image, (850, 500))
     window.blit(background_image, (0, 0))
     undropping = True
     font = pygame.font.Font('freesansbold.ttf', 18)
+    
     # Handle empty lists at the beginning
     while user.dropped_words and user.dropped_words[0] == ['']:
         user.dropped_words = user.dropped_words[1:]
-
     copy_dropped_words = [word for word in user.dropped_words]
     
-    # print(copy_dropped_words)  # Debugging print
-
+    # Display dropped words in batches of 9
     ukr_dropped_words = [word[1] for word in copy_dropped_words]
     num_pages = math.ceil(len(ukr_dropped_words) / 9)
 
@@ -26,6 +25,8 @@ def review_dropped_words(user, window):
         window.blit(background_image, (0, 0))
         display_words = ukr_dropped_words[( 9 * i ) : ( 9 * (i + 1) )]
         still_thinking = True
+
+        # Display words and their corresponding indices
         for index, word in enumerate(display_words):
             text = font.render(str(1 + index) + '. ' + word, True, (0, 0, 0))
             textRect = text.get_rect()
@@ -34,6 +35,8 @@ def review_dropped_words(user, window):
             textRect.center = (x, y)
             if still_thinking:
                 window.blit(text, textRect)
+
+        # Additional instructions for undropping
         font1 = pygame.font.Font('freesansbold.ttf', 16)
         text5 = font1.render('Press the numbers to undrop words; press Space when done', True, (0, 255, 0), (0, 0, 128))
         textRect5 = text5.get_rect()
@@ -48,12 +51,11 @@ def review_dropped_words(user, window):
                 for n in range(9):
                     button = getattr(pygame, 'K_' + str(n + 1))
                     if event.type == pygame.KEYUP and event.key == button:
-                        print(n)  # Handle number key press
+                        # Handle number key press
                         word_index=9*i+n
-                        print(word_index)
                         picked_word=copy_dropped_words[word_index]
-                        print(picked_word)
                         user.dropped_words.remove(picked_word)
+                        # Update the database with the modified dropped words
                         sql = '''UPDATE users SET dropped_words = ?
                         WHERE id = ?
                         '''
