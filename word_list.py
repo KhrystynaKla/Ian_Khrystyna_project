@@ -1,3 +1,7 @@
+# The vocabulary list contains pairs of English and Ukrainian phrases.
+# Each entry in the list is a sublist with the following structure:
+# [English_word, Ukrainian_word, English_sentence, Ukrainian_sentence]
+
 vocab_list = [
     ["and", "та", "She likes coffee and tea.", "Вона любить каву та чай."],
     ["you", "ви", "I met you at the party.", "Я зустрів вас на вечірці."],
