@@ -4,8 +4,11 @@ import math
 
 
 def review_dropped_words(user, window):
-    undropping = True
     window.fill((255, 255, 255))
+    background_image = pygame.image.load('Drop words.png')
+    background_image = pygame.transform.scale(background_image, (850, 500))
+    window.blit(background_image, (0, 0))
+    undropping = True
     font = pygame.font.Font('freesansbold.ttf', 18)
     # Handle empty lists at the beginning
     while user.dropped_words and user.dropped_words[0] == ['']:
@@ -20,14 +23,14 @@ def review_dropped_words(user, window):
     num_pages = math.ceil(len(ukr_dropped_words) / 9)
 
     for i in range(num_pages):
-        window.fill((255, 255, 255))
+        window.blit(background_image, (0, 0))
         display_words = ukr_dropped_words[( 9 * i ) : ( 9 * (i + 1) )]
         still_thinking = True
         for index, word in enumerate(display_words):
-            text = font.render(str(1 + index) + '. ' + word, True, (0, 255, 0), (0, 0, 128))
+            text = font.render(str(1 + index) + '. ' + word, True, (0, 0, 0))
             textRect = text.get_rect()
-            x = 200  # Adjusted x-coordinate
-            y = (40 * index) + 30
+            x = 300  # Adjusted x-coordinate
+            y = (33 * index) + 110
             textRect.center = (x, y)
             if still_thinking:
                 window.blit(text, textRect)
