@@ -1,4 +1,5 @@
 from user import User 
+from __init__ import CONN, CURSOR
 import pygame
 import math
 
@@ -14,12 +15,11 @@ def review_dropped_words(user, window):
     while user.dropped_words and user.dropped_words[0] == ['']:
         user.dropped_words = user.dropped_words[1:]
 
-    copy_dropped_words = user.dropped_words
+    copy_dropped_words = [word for word in user.dropped_words]
     
     # print(copy_dropped_words)  # Debugging print
 
     ukr_dropped_words = [word[1] for word in copy_dropped_words]
-    page_num = 0
     num_pages = math.ceil(len(ukr_dropped_words) / 9)
 
     for i in range(num_pages):
@@ -49,6 +49,16 @@ def review_dropped_words(user, window):
                     button = getattr(pygame, 'K_' + str(n + 1))
                     if event.type == pygame.KEYUP and event.key == button:
                         print(n)  # Handle number key press
+                        word_index=9*i+n
+                        print(word_index)
+                        picked_word=copy_dropped_words[word_index]
+                        print(picked_word)
+                        user.dropped_words.remove(picked_word)
+                        sql = '''UPDATE users SET dropped_words = ?
+                        WHERE id = ?
+                        '''
+                        CURSOR.execute(sql, [user.join_dropped_words(), user.id])
+                        CONN.commit()
                 if event.type == pygame.KEYUP and event.key == pygame.K_SPACE:
                     if i ==num_pages-1:
                         undropping=False
