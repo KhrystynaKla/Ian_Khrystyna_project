@@ -50,6 +50,8 @@ def get_user_name():
 # Get user name
 user_name = get_user_name()
 menu_window = pygame.display.set_mode([850, 500])
+background_image = pygame.image.load('Stand with Ukraine Poster Landscape.png')
+background_image = pygame.transform.scale(background_image, (850, 500))
 on_menu = True
 
 while on_menu:
@@ -65,8 +67,8 @@ while on_menu:
 
     font = pygame.font.Font('freesansbold.ttf', 32)
 
-    text1 = font.render('PRESS 1 TO STUDY', True, (0, 255, 0), (0, 0, 128))
-    text2 = font.render('PRESS 2 TO SEE DROPPED WORDS', True, (0, 255, 0), (0, 0, 128))
+    text1 = font.render('PRESS 1 TO STUDY', True, (0, 0, 0))
+    text2 = font.render('PRESS 2 TO SEE DROPPED WORDS', True, (0, 0, 0))
 
     textRect1 = text1.get_rect()
     textRect2 = text2.get_rect()
@@ -74,7 +76,8 @@ while on_menu:
     textRect1.center = (850 // 2, 500 // 3)
     textRect2.center = (850 // 2, 500 // 3 * 2)
 
-    menu_window.fill((255, 255, 255))  # Clear the menu window
+    menu_window.blit(background_image, (0, 0))
+    # menu_window.fill((255, 255, 255))  # Clear the menu window
     menu_window.blit(text1, textRect1)
     menu_window.blit(text2, textRect2)
     pygame.display.update()

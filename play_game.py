@@ -1,7 +1,13 @@
 import pygame
 
+
+
 def play_game(user, list_of_words, window):
     playing = True
+    background_image1 = pygame.image.load('ukrainian flags.png')
+    background_image1 = pygame.transform.scale(background_image1, (850, 500))
+    background_image2 = pygame.image.load('American flags.png')
+    background_image2 = pygame.transform.scale(background_image2, (850, 500))
 
     for index, word in enumerate(list_of_words):
         still_thinking = True
@@ -47,36 +53,40 @@ def play_game(user, list_of_words, window):
 
             window.fill((255, 255, 255))  # Clear the window
 
-            font = pygame.font.Font('freesansbold.ttf', 32)
+            font = pygame.font.Font('freesansbold.ttf', 42)
+            font2 = pygame.font.Font('freesansbold.ttf', 18)
 
-            text1 = font.render(list_of_words[index][1], True, (0, 255, 0), (0, 0, 128))
-            text2 = font.render(list_of_words[index][3], True, (0, 255, 0), (0, 0, 128))
+
+            text1 = font.render(list_of_words[index][1], True, (0, 0, 0))
+            text2 = font2.render(list_of_words[index][3], True, (0, 0, 0))
 
             textRect1 = text1.get_rect()
             textRect2 = text2.get_rect()
 
-            textRect1.center = (850 // 2, 500 // 3)
-            textRect2.center = (850 // 2, 500 // 3 * 2)
+            textRect1.center = (850 // 2, 500 // 2.5)
+            textRect2.center = (850 // 2, 500 // 3 * 1.8)
 
-            text3 = font.render(list_of_words[index][0], True, (0, 255, 0), (0, 0, 128))
-            text4 = font.render(list_of_words[index][2], True, (0, 255, 0), (0, 0, 128))
+            text3 = font.render(list_of_words[index][0], True, (0, 0, 0))
+            text4 = font2.render(list_of_words[index][2], True, (0, 0, 0))
 
             textRect3 = text3.get_rect()
             textRect4 = text4.get_rect()
 
-            textRect3.center = (850 // 2, 500 // 3)
-            textRect4.center = (850 // 2, 500 // 3 * 2)
+            textRect3.center = (850 // 2, 500 // 2.5)
+            textRect4.center = (850 // 2, 500 // 3 * 1.8)
 
             if flipped:
+                window.blit(background_image1, (0, 0))
                 window.blit(text1, textRect1)
                 window.blit(text2, textRect2)
             else:
+                window.blit(background_image2, (0, 0))
                 window.blit(text3, textRect3)
                 window.blit(text4, textRect4)
 
             font1 = pygame.font.Font('freesansbold.ttf', 16)
 
-            text5 = font1.render('Controls: 1 - Easy to remember  2 - I kinda know it  3 - Nope  X - Drop word  SPACE - Flip card', True, (0, 255, 0), (0, 0, 128))
+            text5 = font1.render('Controls: 1 - Easy to remember  2 - I kinda know it  3 - Nope  X - Drop word  SPACE - Flip card', True, (0, 0, 0), (254, 255, 217))
             
             textRect5 = text5.get_rect()
             textRect5.center = (850 // 2, 440)
