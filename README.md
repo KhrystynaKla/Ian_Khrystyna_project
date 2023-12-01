@@ -3,7 +3,7 @@
 This is a simple flashcards app designed to help users learn Ukrainian words. The app is built using the Pygame library and incorporates features like studying words, reviewing dropped words, and taking quizzes.
 
 ## How to Use
-
+Run 'pip install pygame' and 'python game.py' in the terminal.
 User Name Entry:
 When you launch the app, you will be prompted to enter your name. Use the keyboard to type your name and press Enter.
 
