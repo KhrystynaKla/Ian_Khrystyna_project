@@ -15,7 +15,7 @@ def review_dropped_words(user, window):
     # Handle empty lists at the beginning
     while user.dropped_words and user.dropped_words[0] == ['']:
         user.dropped_words = user.dropped_words[1:]
-    copy_dropped_words = [word for word in user.dropped_words]
+    copy_dropped_words = reversed(user.dropped_words)
     
     # Display dropped words in batches of 9
     ukr_dropped_words = [word[1] for word in copy_dropped_words]
@@ -38,15 +38,17 @@ def review_dropped_words(user, window):
 
         # Additional instructions for undropping
         font1 = pygame.font.Font('freesansbold.ttf', 16)
-        text5 = font1.render('Press the numbers to undrop words; press Space when done', True, (0, 255, 0), (0, 0, 128))
+        text5 = font1.render('1-9: undrop numbered word; SPACE: next page of words; X: quit', True, (0, 255, 0), (0, 0, 128))
         textRect5 = text5.get_rect()
-        textRect5.center = (850 // 2, 440)    
+        textRect5.center = (850 // 2, 440)
+
+
         window.blit(text5, textRect5)
         pygame.display.update()
 
         while still_thinking and undropping:
             for event in pygame.event.get():
-                if event.type == pygame.QUIT:
+                if event.type == pygame.QUIT or (event.type == pygame.KEYUP and event.key == pygame.K_SPACE):
                     undropping = False
                 for n in range(9):
                     button = getattr(pygame, 'K_' + str(n + 1))
