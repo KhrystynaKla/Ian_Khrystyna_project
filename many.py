@@ -2605,14 +2605,3 @@ vocab_list = [
     ["stick", "палиця", "The boy picked up a stick and threw it into the river.", "Хлопчик підняв палицю і кинув її в річку."],
     ["hallowed", "священний", "The hallowed halls of the university were filled with history.", "Священні зали університету були сповнені історії."]
 ]
-
-for word in vocab_list:
-    out_of_order = False
-    for letter in ['Q','W','E','R','T','Y','U','I','O','P','A','S','D','F','G','H','J','K','L','Z','X','C','V','B','N','M']:
-        if word[3].startswith(letter):
-            out_of_order = True
-    if out_of_order:
-        print(word)
-
-
-
