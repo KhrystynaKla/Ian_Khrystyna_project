@@ -10,15 +10,23 @@ pygame.init()
 
 # Function to get user name, when you start playing
 def get_user_name():
-    screen = pygame.display.set_mode((850, 500))
-    pygame.display.set_caption("Enter Your Name")
+    pygame.init()
+
+    screen_width, screen_height = 850, 500
+    screen = pygame.display.set_mode((screen_width, screen_height))
+    pygame.display.set_caption("JUST DO IT!")
+
+    background_image = pygame.image.load("backgrounds/enter_your_name_picture.png")  
+    background_image = pygame.transform.scale(background_image, (screen_width, screen_height))
 
     font = pygame.font.Font(None, 36)
-    input_box = pygame.Rect(100, 50, 200, 50)
+    input_box = pygame.Rect(150, 237, 210, 40)
     color_inactive = pygame.Color('lightskyblue3')
     color_active = pygame.Color('dodgerblue2')
+    text_color = (86, 75, 78)
     color = color_inactive
     text = ''
+    placeholder = 'Enter Your Name'
     active = False
 
     while True:
@@ -41,13 +49,19 @@ def get_user_name():
                     else:
                         text += event.unicode
 
-        screen.fill((255, 255, 255))
-        txt_surface = font.render(text, True, color)
-        width = max(200, txt_surface.get_width() + 10)
-        input_box.w = width
-        screen.blit(txt_surface, (input_box.x + 5, input_box.y + 5))
+        screen.blit(background_image, (0, 0))  # Draw the background image
+        if not text and not active:
+            placeholder_surface = font.render(placeholder, True, (128, 128, 128))
+            screen.blit(placeholder_surface, (input_box.x + 5, input_box.y + 5))
+        else:
+            txt_surface = font.render(text, True,  text_color)
+            width = max(200, txt_surface.get_width() + 10)
+            input_box.w = width
+            screen.blit(txt_surface, (input_box.x + 5, input_box.y + 5))
+        
         pygame.draw.rect(screen, color, input_box, 2)
         pygame.display.flip()
+        
 
 # Get user name
 user_name = get_user_name()
