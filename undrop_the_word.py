@@ -15,7 +15,7 @@ def review_dropped_words(user, window):
     # Handle empty lists at the beginning
     while user.dropped_words and user.dropped_words[0] == ['']:
         user.dropped_words = user.dropped_words[1:]
-    copy_dropped_words = reversed(user.dropped_words)
+    copy_dropped_words = [word for word in reversed(user.dropped_words)]
     
     # Display dropped words in batches of 9
     ukr_dropped_words = [word[1] for word in copy_dropped_words]
@@ -48,7 +48,7 @@ def review_dropped_words(user, window):
 
         while still_thinking and undropping:
             for event in pygame.event.get():
-                if event.type == pygame.QUIT or (event.type == pygame.KEYUP and event.key == pygame.K_SPACE):
+                if event.type == pygame.QUIT :
                     undropping = False
                 for n in range(9):
                     button = getattr(pygame, 'K_' + str(n + 1))
